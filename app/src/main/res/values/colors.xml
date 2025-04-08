@@ -3,5 +3,6 @@
     <color name="blue">#2196F3</color>
     <color name="green">#4CAF50</color>
     <color name="red">#F44336</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#21201F</color>
+    <color name="forCard">#3D3D3D</color>
 </resources>

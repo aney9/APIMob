@@ -8,34 +8,23 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
-
-import java.util.List;
-import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.DELETE;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiService {
-    @GET("api/products")
+    @GET("api/Userrs")
+    Call<List<User>> getAllUsers();
+
+    @GET("api/CatalogProducts")
     Call<List<Product>> getProducts();
 
-    @GET("api/users/{id}")
+    @GET("api/Userrs/{id}")
     Call<User> getUser(@Path("id") int id);
 
-    @GET("api/users")
-    Call<UserResponse> getUserByEmail(@Query("email") String email);
-
-    @POST("api/products")
+    @POST("api/CatalogProducts")
     Call<Product> createProduct(@Body Product product);
 
-    @PUT("api/products/{id}")
+    @PUT("api/CatalogProducts/{id}")
     Call<Product> updateProduct(@Path("id") int id, @Body Product product);
 
-    @DELETE("api/products/{id}")
+    @DELETE("api/CatalogProducts/{id}")
     Call<Void> deleteProduct(@Path("id") int id);
 }
