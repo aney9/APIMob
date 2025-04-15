@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> {
-    private List<Product> products = new ArrayList<>();
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
+    private List<Categorie> categories = new ArrayList<>();
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(Product product);
+        void onItemClick(Categorie category);
     }
 
-    public ProductsAdapter(OnItemClickListener listener) {
+    public CategoriesAdapter(OnItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -25,31 +25,31 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.productName);
+            name = itemView.findViewById(R.id.categoryName);
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Product product = products.get(position);
-        holder.name.setText(product.getProductName());
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(product));
+        Categorie category = categories.get(position);
+        holder.name.setText(category.getCategories());
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(category));
     }
 
     @Override
     public int getItemCount() {
-        return products.size();
+        return categories.size();
     }
 
-    public void updateProducts(List<Product> newProducts) {
-        if (newProducts != null) {
-            this.products = newProducts;
+    public void updateCategories(List<Categorie> newCategories) {
+        if (newCategories != null) {
+            this.categories = newCategories;
             notifyDataSetChanged();
         }
     }

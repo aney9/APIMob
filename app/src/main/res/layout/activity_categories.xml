@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/productsRecyclerView"
+        android:id="@+id/categoriesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
@@ -19,12 +19,12 @@
         android:padding="8dp">
 
         <ImageButton
-            android:id="@+id/addProductButton"
+            android:id="@+id/addCategoryButton"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:background="@android:drawable/ic_menu_add"
-            android:contentDescription="Add Product"/>
+            android:contentDescription="Add Category"/>
 
         <ImageButton
             android:id="@+id/userInfoButton"

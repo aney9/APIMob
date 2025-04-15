@@ -27,4 +27,34 @@ public interface ApiService {
 
     @DELETE("api/CatalogProducts/{id}")
     Call<Void> deleteProduct(@Path("id") int id);
+
+    @GET("api/Categories")
+    Call<List<Categorie>> getAllCategories();
+
+    @GET("api/Brands")
+    Call<List<Brand>> getAllBrands();
+
+    @GET("api/Categories/{id}")
+    Call<Categorie> getCategory(@Path("id") int id);
+
+    @GET("api/Brands/{id}")
+    Call<Brand> getBrand(@Path("id") int id);
+
+    @POST("api/Categories")
+    Call<Categorie> createCategory(@Body Categorie category);
+
+    @POST("api/Brands")
+    Call<Brand> createBrand(@Body Brand brand);
+
+    @PUT("api/Categories/{id}")
+    Call<Categorie> updateCategory(@Path("id") int id, @Body Categorie category);
+
+    @PUT("api/Brands/{id}")
+    Call<Brand> updateBrand(@Path("id") int id, @Body Brand brand);
+
+    @DELETE("api/Categories/{id}")
+    Call<Void> deleteCategory(@Path("id") int id);
+
+    @DELETE("api/Brands/{id}")
+    Call<Void> deleteBrand(@Path("id") int id);
 }

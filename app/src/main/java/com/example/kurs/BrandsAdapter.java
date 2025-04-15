@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHolder> {
-    private List<Product> products = new ArrayList<>();
+public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.ViewHolder> {
+    private List<Brand> brands = new ArrayList<>();
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(Product product);
+        void onItemClick(Brand brand);
     }
 
-    public ProductsAdapter(OnItemClickListener listener) {
+    public BrandsAdapter(OnItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -25,31 +25,31 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
         public ViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.productName);
+            name = itemView.findViewById(R.id.brandName);
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_brand, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Product product = products.get(position);
-        holder.name.setText(product.getProductName());
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(product));
+        Brand brand = brands.get(position);
+        holder.name.setText(brand.getBrand1());
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(brand));
     }
 
     @Override
     public int getItemCount() {
-        return products.size();
+        return brands.size();
     }
 
-    public void updateProducts(List<Product> newProducts) {
-        if (newProducts != null) {
-            this.products = newProducts;
+    public void updateBrands(List<Brand> newBrands) {
+        if (newBrands != null) {
+            this.brands = newBrands;
             notifyDataSetChanged();
         }
     }

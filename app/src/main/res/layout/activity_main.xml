@@ -12,9 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
-    android:inputType="textEmailAddress"
-    android:padding="12dp"
-    android:layout_marginBottom="16dp"/>
+        android:inputType="textEmailAddress"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_background"
+        android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"/>
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -23,13 +26,17 @@
         android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:padding="12dp"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/edittext_background"
+        android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"/>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_button"
-        android:backgroundTint="@color/blue"
-        android:textColor="@color/white"/>
+        android:background="@drawable/button_background"
+        android:textColor="#FFC100"/>
+
 </LinearLayout>
