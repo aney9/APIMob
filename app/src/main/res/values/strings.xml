@@ -1,8 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">kurs</string>
-    <string name="login_hint">Логин</string>
+    <string name="app_name">Курс</string>
+    <string name="logo_description">App logo for Лапы и хвост</string>
     <string name="password_hint">Пароль</string>
     <string name="login_button">Войти</string>
-    <string name="update_button">Обновить</string>
-    <string name="delete_button">Удалить</string>
+    <string name="email_hint">Email</string>
+    <string name="confirm_email_button">Подтвердить почту</string>
+    <string name="verify_code_title">Введите код подтверждения</string>
+    <string name="code_hint">Код</string>
+    <string name="verify_code_button">Подтвердить код</string>
+    <string name="new_password_hint">Новый пароль</string>
+    <string name="change_password_button">Изменить пароль</string>
+    <string name="home">Главная</string>
+    <string name="catalog">Каталог</string>
+    <string name="favorites">Избранное</string>
+    <string name="profile">Профиль</string>
+    <string name="cart">Корзина</string>
 </resources>

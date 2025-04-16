@@ -10,28 +10,27 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "https://10.0.2.2:7267/"; // Соответствует серверу
-    private static ApiService apiService;
+    private static Retrofit retrofit;
+    private static final String BASE_URL = "https://10.0.2.2:7267/";
 
     public static ApiService getApiService() {
-        if (apiService == null) {
-            OkHttpClient okHttpClient = getUnsafeOkHttpClient();
-            Retrofit retrofit = new Retrofit.Builder()
+        if (retrofit == null) {
+            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            OkHttpClient client = getUnsafeOkHttpClient();
+
+            retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
+                    .client(client)
                     .build();
-            apiService = retrofit.create(ApiService.class);
         }
-        return apiService;
+        return retrofit.create(ApiService.class);
     }
 
     private static OkHttpClient getUnsafeOkHttpClient() {
         try {
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY); // Логируем тело запроса и ответа
-
-            // Настраиваем TrustManager для обхода проверки сертификатов
             final TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         @Override
@@ -44,22 +43,19 @@ public class RetrofitClient {
 
                         @Override
                         public X509Certificate[] getAcceptedIssuers() {
-                            return new X509Certificate[0];
+                            return new X509Certificate[]{};
                         }
                     }
             };
 
-            // Инициализация SSLContext
-            SSLContext sslContext = SSLContext.getInstance("SSL");
+            final SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, trustAllCerts, new SecureRandom());
-            SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
-            OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                    .addInterceptor(logging)
-                    .sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0])
-                    .hostnameVerifier((hostname, session) -> true); // Пропускаем проверку имени хоста
-
-            return builder.build();
+            return new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0])
+                    .hostnameVerifier((hostname, session) -> true)
+                    .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

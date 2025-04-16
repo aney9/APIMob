@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private Button loginButton;
+    private TextView registerLink;
+    private TextView forgotPasswordLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         int savedUserId = prefs.getInt(KEY_USER_ID, -1);
         if (savedUserId != -1) {
-            Intent intent = new Intent(MainActivity.this, CatalogActivity.class);
+            Intent intent = new Intent(MainActivity.this, MainPage.class);
             intent.putExtra("USER_ID", savedUserId);
             startActivity(intent);
             finish();
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.loginEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
+        registerLink = findViewById(R.id.registerLink);
+        forgotPasswordLink = findViewById(R.id.forgotPasswordLink);
 
         loginButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
@@ -53,6 +57,16 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(MainActivity.this, "Пожалуйста, заполните все поля", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        registerLink.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RegistrationPage.class);
+            startActivity(intent);
+        });
+
+        forgotPasswordLink.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ForgotPasswordPage.class);
+            startActivity(intent);
         });
     }
 
@@ -81,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "Найден пользователь: " + foundUser.getEmail());
 
                             if (foundUser.getLoginpassword().equals(password)) {
-                                if (foundUser.getRolesId() != null && foundUser.getRolesId() == 2) {
+                                if (foundUser.getRolesId() == 2) {
                                     SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                                     SharedPreferences.Editor editor = prefs.edit();
                                     editor.putInt(KEY_USER_ID, foundUser.getIdUsers());
@@ -89,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                                     editor.putInt(KEY_ROLE_ID, foundUser.getRolesId());
                                     editor.apply();
 
-                                    Intent intent = new Intent(MainActivity.this, CatalogActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, MainPage.class);
                                     intent.putExtra("USER_ID", foundUser.getIdUsers());
                                     startActivity(intent);
                                     finish();

@@ -19,6 +19,9 @@ public interface ApiService {
     @GET("api/Userrs/{id}")
     Call<User> getUser(@Path("id") int id);
 
+    @PUT("api/Userrs/{id}")
+    Call<User> updateUser(@Path("id") int id, @Body User user);
+
     @POST("api/CatalogProducts")
     Call<Product> createProduct(@Body Product product);
 
@@ -33,6 +36,9 @@ public interface ApiService {
 
     @GET("api/Brands")
     Call<List<Brand>> getAllBrands();
+
+    @GET("api/CatalogProducts")
+    Call<List<Product>> getAllProducts();
 
     @GET("api/Categories/{id}")
     Call<Categorie> getCategory(@Path("id") int id);
@@ -57,4 +63,19 @@ public interface ApiService {
 
     @DELETE("api/Brands/{id}")
     Call<Void> deleteBrand(@Path("id") int id);
+
+    @GET("api/Rolees")
+    Call<List<Role>> getAllRoles();
+
+    @GET("api/Rolees/{id}")
+    Call<Role> getRole(@Path("id") int id);
+
+    @POST("api/Favorites")
+    Call<Favorite> addFavorite(@Body Favorite favorite);
+
+    @GET("api/Favorites/{userId}")
+    Call<List<Favorite>> getFavorites(@Path("userId") String userId);
+
+    @DELETE("api/Favorites/{id}")
+    Call<Void> deleteFavorite(@Path("id") int id);
 }

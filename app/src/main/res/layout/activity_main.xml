@@ -5,7 +5,25 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center"
-    android:background="@color/white">
+    android:background="@color/fon">
+
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/logo"
+        android:contentDescription="@string/logo_description"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Лапы и хвост"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="24dp"/>
 
     <EditText
         android:id="@+id/loginEditText"
@@ -16,7 +34,7 @@
         android:padding="12dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/edittext_background"
-        android:textColorHint="#FFFFFF"
+        android:textColorHint="#FFC100"
         android:textColor="#FFFFFF"/>
 
     <EditText
@@ -28,15 +46,41 @@
         android:padding="12dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/edittext_background"
-        android:textColorHint="#FFFFFF"
+        android:textColorHint="#FFC100"
         android:textColor="#FFFFFF"/>
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login_button"
+        android:text="Email"
         android:background="@drawable/button_background"
-        android:textColor="#FFC100"/>
+        android:textColor="#FFC100"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/registerLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Нет аккаунта? Зарегистрируйтесь"
+        android:textColor="#0000FF"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"
+        android:autoLink="none"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackground"/>
+
+    <TextView
+        android:id="@+id/forgotPasswordLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Забыли пароль?"
+        android:textColor="#0000FF"
+        android:textSize="16sp"
+        android:autoLink="none"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackground"/>
 
 </LinearLayout>
