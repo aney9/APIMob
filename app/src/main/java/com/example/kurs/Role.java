@@ -1,6 +1,7 @@
 package com.example.kurs;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Role {
@@ -10,24 +11,36 @@ public class Role {
     @SerializedName("rolee1")
     private String rolee1;
 
-    @SerializedName("userr") // Изменено с "userrs" на "userr"
-    private List<User> userr; // Изменено с List<String> на List<User>
+    @SerializedName("userrs")
+    private List<String> userrs;
 
-    public Role(int idRole, String rolee1, List<User> userr) {
+    public Role(int idRole, String rolee1) {
         this.idRole = idRole;
         this.rolee1 = rolee1;
-        this.userr = userr;
+        this.userrs = new ArrayList<>();
     }
 
     public int getIdRole() {
         return idRole;
     }
 
+    public void setIdRole(int idRole) {
+        this.idRole = idRole;
+    }
+
     public String getRolee1() {
         return rolee1;
     }
 
-    public List<User> getUserr() {
-        return userr;
+    public void setRolee1(String rolee1) {
+        this.rolee1 = rolee1;
+    }
+
+    public List<String> getUserrs() {
+        return userrs;
+    }
+
+    public void setUserrs(List<String> userrs) {
+        this.userrs = userrs;
     }
 }

@@ -5,6 +5,9 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import javax.net.ssl.*;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
@@ -20,9 +23,14 @@ public class RetrofitClient {
 
             OkHttpClient client = getUnsafeOkHttpClient();
 
+            Gson gson = new GsonBuilder()
+                    .serializeNulls() // Включаем сериализацию null
+                    .registerTypeAdapter(Cart.class, new CartSerializer()) // Регистрируем кастомный сериализатор
+                    .create();
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .client(client)
                     .build();
         }

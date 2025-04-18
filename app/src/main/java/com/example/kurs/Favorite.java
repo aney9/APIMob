@@ -1,25 +1,35 @@
 package com.example.kurs;
 
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 
-public class Favorite implements Serializable {
+public class Favorite {
+    @SerializedName("idFavorite")
     private int idFavorite;
-    private String userId;
-    private int catalogId;
-    private String addedAt;
-    private Product catalog;
 
-    public Favorite(int idFavorite, String userId, int catalogId, String addedAt, Product catalog) {
+    @SerializedName("userId")
+    private String userId;
+
+    @SerializedName("catalogId")
+    private int catalogId;
+
+    @SerializedName("addedAt")
+    private String addedAt;
+
+    // Конструктор
+    public Favorite(int idFavorite, String userId, int catalogId, String addedAt) {
         this.idFavorite = idFavorite;
         this.userId = userId;
         this.catalogId = catalogId;
         this.addedAt = addedAt;
-        this.catalog = catalog;
     }
 
+    // Геттеры и сеттеры
     public int getIdFavorite() { return idFavorite; }
+    public void setIdFavorite(int idFavorite) { this.idFavorite = idFavorite; }
     public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
     public int getCatalogId() { return catalogId; }
+    public void setCatalogId(int catalogId) { this.catalogId = catalogId; }
     public String getAddedAt() { return addedAt; }
-    public Product getCatalog() { return catalog; }
+    public void setAddedAt(String addedAt) { this.addedAt = addedAt; }
 }

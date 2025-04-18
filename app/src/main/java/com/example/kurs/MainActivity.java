@@ -1,5 +1,6 @@
 package com.example.kurs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -96,6 +97,10 @@ public class MainActivity extends AppCompatActivity {
 
                             if (foundUser.getLoginpassword().equals(password)) {
                                 if (foundUser.getRolesId() == 2) {
+                                    // Сохраняем userId и clientName с помощью AuthUtils
+                                    AuthUtils.saveUserData(MainActivity.this, foundUser.getIdUsers(), foundUser.getClientName());
+
+                                    // Сохраняем дополнительные данные в SharedPreferences
                                     SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                                     SharedPreferences.Editor editor = prefs.edit();
                                     editor.putInt(KEY_USER_ID, foundUser.getIdUsers());
@@ -103,15 +108,20 @@ public class MainActivity extends AppCompatActivity {
                                     editor.putInt(KEY_ROLE_ID, foundUser.getRolesId());
                                     editor.apply();
 
+                                    Log.d(TAG, "Авторизация успешна, userId: " + foundUser.getIdUsers() + ", clientName: " + foundUser.getClientName());
+                                    Toast.makeText(MainActivity.this, "Авторизация успешна", Toast.LENGTH_SHORT).show();
+
                                     Intent intent = new Intent(MainActivity.this, MainPage.class);
                                     intent.putExtra("USER_ID", foundUser.getIdUsers());
                                     startActivity(intent);
                                     finish();
                                 } else {
                                     Toast.makeText(MainActivity.this, "Доступ только для определенной роли", Toast.LENGTH_SHORT).show();
+                                    Log.w(TAG, "Роль пользователя не соответствует: " + foundUser.getRolesId());
                                 }
                             } else {
                                 Toast.makeText(MainActivity.this, "Неверный пароль", Toast.LENGTH_SHORT).show();
+                                Log.w(TAG, "Неверный пароль для email: " + email);
                             }
                         } else {
                             Toast.makeText(MainActivity.this, "Пользователь с такой почтой не найден", Toast.LENGTH_SHORT).show();

@@ -21,6 +21,7 @@ public class ChangePassword extends AppCompatActivity {
     private Button changePasswordButton;
     private String email;
     private Toast toast;
+    private static final String TAG = "ChangePassword";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,17 +76,20 @@ public class ChangePassword extends AppCompatActivity {
                     if (foundUser != null) {
                         updateUserPassword(foundUser, newPassword);
                     } else {
-                        runOnUiThread(() -> showToast("Пользователь с такой почтой не найден"));
+                        runOnUiThread(() -> showToast("Пользователь с почтой " + email + " не найден"));
+                        Log.w(TAG, "Пользователь с почтой " + email + " не найден");
                     }
                 } else {
-                    final String errorBody;
+                    String errorBody;
                     try {
                         errorBody = response.errorBody() != null ? response.errorBody().string() : "Нет тела ошибки";
                     } catch (Exception e) {
-                        Log.e("ChangePassword", e.getMessage());
-                        return;
+                        Log.e(TAG, "Ошибка чтения тела ошибки: " + e.getMessage());
+                        errorBody = "Ошибка чтения тела ошибки";
                     }
-                    runOnUiThread(() -> showToast("Ошибка: " + response.code() + " - " + errorBody));
+                    final String finalErrorBody = errorBody;
+                    runOnUiThread(() -> showToast("Ошибка загрузки пользователей: " + response.code() + " - " + finalErrorBody));
+                    Log.e(TAG, "Ошибка загрузки пользователей: " + response.code() + " - " + finalErrorBody);
                 }
             }
 
@@ -93,31 +97,13 @@ public class ChangePassword extends AppCompatActivity {
             public void onFailure(Call<List<User>> call, Throwable t) {
                 if (isFinishing() || isDestroyed()) return;
                 runOnUiThread(() -> showToast("Ошибка сети: " + t.getMessage()));
+                Log.e(TAG, "Ошибка сети при загрузке пользователей: " + t.getMessage());
             }
         });
     }
 
     private void updateUserPassword(User user, String newPassword) {
-        // Создаем список userr для объекта Role
-        List<User> userr = new ArrayList<>();
-        // Создаем объект User для списка userr
-        User roleUser = new User(
-                user.getIdUsers(),
-                user.getLoginvhod(),
-                user.getLoginpassword(), // Используем текущий пароль
-                user.getPhoneNumber(),
-                user.getClientName(),
-                user.getEmail(),
-                2, // rolesId=2 для пользователя
-                user.getReviews(),
-                null // Устанавливаем roles как null, чтобы избежать рекурсии
-        );
-        userr.add(roleUser);
-
-        // Создаем объект Role с ролью пользователя (idRole=2)
-        Role role = new Role(2, "User", userr); // rolee1="User", предполагаем, что это правильное значение
-
-        // Создаем обновленного пользователя с новым паролем и заполненным полем roles
+        // Создаём обновлённого пользователя с новым паролем
         User updatedUser = new User(
                 user.getIdUsers(),
                 user.getLoginvhod(),
@@ -125,10 +111,13 @@ public class ChangePassword extends AppCompatActivity {
                 user.getPhoneNumber(),
                 user.getClientName(),
                 user.getEmail(),
-                2, // rolesId=2 для пользователя
-                user.getReviews(),
-                role // Передаем объект Role
+                user.getRolesId()
         );
+
+        // Устанавливаем reviews через сеттер
+        updatedUser.setReviews(user.getReviews());
+        // Поле roles оставляем null, так как оно не обязательно для запроса
+        updatedUser.setRoles(null);
 
         Call<User> updateCall = RetrofitClient.getApiService().updateUser(user.getIdUsers(), updatedUser);
         updateCall.enqueue(new Callback<User>() {
@@ -136,22 +125,23 @@ public class ChangePassword extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (isFinishing() || isDestroyed()) return;
 
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     runOnUiThread(() -> {
-                        showToast("Пароль успешно изменен для " + email);
+                        showToast("Пароль успешно изменён для " + email);
                         finish();
                     });
+                    Log.d(TAG, "Пароль успешно обновлён для пользователя с ID=" + user.getIdUsers());
                 } else {
-                    String errorBody = "Нет тела ошибки";
+                    String errorBody;
                     try {
-                        if (response.errorBody() != null) {
-                            errorBody = response.errorBody().string();
-                        }
+                        errorBody = response.errorBody() != null ? response.errorBody().string() : "Нет тела ошибки";
                     } catch (Exception e) {
-                        Log.e("ChangePassword", "Ошибка чтения тела ошибки: " + e.getMessage());
+                        Log.e(TAG, "Ошибка чтения тела ошибки: " + e.getMessage());
+                        errorBody = "Ошибка чтения тела ошибки";
                     }
-                    String finalErrorBody = errorBody;
+                    final String finalErrorBody = errorBody;
                     runOnUiThread(() -> showToast("Ошибка обновления пароля: " + response.code() + " - " + finalErrorBody));
+                    Log.e(TAG, "Ошибка обновления пароля: " + response.code() + " - " + finalErrorBody);
                 }
             }
 
@@ -159,6 +149,7 @@ public class ChangePassword extends AppCompatActivity {
             public void onFailure(Call<User> call, Throwable t) {
                 if (isFinishing() || isDestroyed()) return;
                 runOnUiThread(() -> showToast("Ошибка сети: " + t.getMessage()));
+                Log.e(TAG, "Ошибка сети при обновлении пароля: " + t.getMessage());
             }
         });
     }
